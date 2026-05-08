@@ -4,15 +4,12 @@ import 'package:classico_app/classifier_cubit/classifier_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
-// 1. تعريف الحالات التي سيمر بها التطبيق
 
 
-// 2. الكيوبت
 class ClassifierCubit extends Cubit<ClassifierState> {
   final AiRepository _repository;
   final ImagePicker _picker = ImagePicker();
 
-  // حقن الاعتماديات (Dependency Injection) يسهل اختبار الكود مستقبلاً
   ClassifierCubit(this._repository) : super(ClassifierInitial()) {
     _initAI();
   }
@@ -21,20 +18,19 @@ class ClassifierCubit extends Cubit<ClassifierState> {
     await _repository.initModel();
   }
 
-  // أضفنا خيار تحديد مصدر الصورة (كاميرا أو معرض)
   Future<void> pickAndClassifyImage(ImageSource source) async {
     try {
       final pickedFile = await _picker.pickImage(source: source);
       if (pickedFile == null) return;
 
       final imageFile = File(pickedFile.path);
-      emit(ClassifierLoading()); // إخبار الواجهة بعرض مؤشر التحميل
+      emit(ClassifierLoading());
 
       final results = await _repository.classifyImage(imageFile);
 
       if (results != null && results.isNotEmpty) {
-        final label = results[0]['label']; // اسم الفريق
-        final confidence = results[0]['confidence']; // نسبة التأكد
+        final label = results[0]['label']; 
+        final confidence = results[0]['confidence']; 
         
         emit(ClassifierSuccess(imageFile, label, confidence));
       } else {
