@@ -33,12 +33,12 @@ class SportsClassifierScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'الكشّاف الذكي ⚽',
+          "the classifer",
           style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.2),
         ),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.transparent, 
+        backgroundColor: Colors.transparent,
       ),
       body: SafeArea(
         child: Padding(
@@ -70,7 +70,6 @@ class SportsClassifierScreen extends StatelessWidget {
     );
   }
 
-  
   Widget _buildInitialState() {
     return Container(
       key: const ValueKey('initial'),
@@ -116,7 +115,9 @@ class SportsClassifierScreen extends StatelessWidget {
   }
 
   Widget _buildSuccessState(ClassifierSuccess state) {
-    final Color confidenceColor = state.confidence > 0.8 ? Colors.green : Colors.orange;
+    final Color confidenceColor = state.confidence > 0.8
+        ? Colors.green
+        : Colors.orange;
 
     return SingleChildScrollView(
       key: const ValueKey('success'),
@@ -136,7 +137,12 @@ class SportsClassifierScreen extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: Image.file(state.image, height: 300, width: double.infinity, fit: BoxFit.cover),
+              child: Image.file(
+                state.image,
+                height: 300,
+                width: double.infinity,
+                fit: BoxFit.fill,
+              ),
             ),
           ),
           const SizedBox(height: 30),
@@ -162,11 +168,19 @@ class SportsClassifierScreen extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.analytics_outlined, color: confidenceColor, size: 20),
+                    Icon(
+                      Icons.analytics_outlined,
+                      color: confidenceColor,
+                      size: 20,
+                    ),
                     const SizedBox(width: 8),
                     Text(
                       "نسبة التطابق: ${(state.confidence * 100).toStringAsFixed(1)}%",
-                      style: TextStyle(fontSize: 18, color: confidenceColor, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: confidenceColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
@@ -209,21 +223,35 @@ class SportsClassifierScreen extends StatelessWidget {
             context,
             icon: Icons.photo_library_rounded,
             label: 'المعرض',
-            onTap: () => context.read<ClassifierCubit>().pickAndClassifyImage(ImageSource.gallery),
+            onTap: () => context.read<ClassifierCubit>().pickAndClassifyImage(
+              ImageSource.gallery,
+            ),
           ),
-          Container(width: 1, height: 30, color: Colors.white24, margin: const EdgeInsets.symmetric(horizontal: 15)),
+          Container(
+            width: 1,
+            height: 30,
+            color: Colors.white24,
+            margin: const EdgeInsets.symmetric(horizontal: 15),
+          ),
           _customButton(
             context,
             icon: Icons.camera_alt_rounded,
             label: 'الكاميرا',
-            onTap: () => context.read<ClassifierCubit>().pickAndClassifyImage(ImageSource.camera),
+            onTap: () => context.read<ClassifierCubit>().pickAndClassifyImage(
+              ImageSource.camera,
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _customButton(BuildContext context, {required IconData icon, required String label, required VoidCallback onTap}) {
+  Widget _customButton(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(15),
@@ -233,7 +261,10 @@ class SportsClassifierScreen extends StatelessWidget {
           children: [
             Icon(icon, color: Colors.blueAccent),
             const SizedBox(width: 8),
-            Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Text(
+              label,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
           ],
         ),
       ),
